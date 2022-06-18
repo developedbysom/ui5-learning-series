@@ -1,89 +1,67 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/Core",
-	"sap/ui/model/json/JSONModel"
+	"sap/ui/model/json/JSONModel"	
 ], function (Controller,Core,JSONModel) {
     "use strict";
 
     return Controller.extend("dataBinding.controller.App", {
-		// onInit: function(){
-		// 	var oView = this.getView(),
-		// 		oMM = Core.getMessageManager();
-		// 	// oMM.registerObject(oView.byId('amt'), true)
-		// 	oMM.registerObject(oView.byId('nameInput'), true)
+		onInit: function () {
+			var oView = this.getView(),
+				oMM = Core.getMessageManager();
 			
-		// 	oView.setModel(new JSONModel({ name: "", email: "" }));
-		// },
-        onPressItem: function (oEvent) {
-            var oSelectedItem = oEvent.getSource();
-            var oContext = oSelectedItem.getBindingContext("products");
-            var sPath = oContext.getPath();
-            var oProductDetailPanel = this.byId("productDetailsPanel");
-            oProductDetailPanel.bindElement({ path: sPath, model: "products" });
+			// Model set up
+			var oData = new JSONModel({
+				OrderQuantity1: 10,
+				OrderQuantity2: 10,
+				date: new Date(),
+				weight: 2.301,
+				zip:'',
+				text:"Quantity should be between 1 and 10"
+			});
+			oView.setModel(oData, 'myModel');
+
+			// Registering to message manager
+
+			oMM.registerObject(oView.byId('OrdQty1'), true)
+			oMM.registerObject(oView.byId('weight'), true)
+			oMM.registerObject(oView.byId('zipcode'), true)
+
+			// Dynamic value binding 
+			oView.byId('OrdQty2').bindValue(
+				{
+					path: 'myModel>/OrderQuantity2',
+					type: 'sap.ui.model.type.Integer',
+					constraints: {
+							minimum: 1,
+							maximum: 10
+					}
+				});
+			// Dynamic property Binding
+			oView.byId('OrdQty2').bindProperty('valueStateText', {
+				path:'myModel>/text'
+				});			
 		},
-		// _validateInput: function (oInput) {
-		// 	var sValueState = "None";
-		// 	var bValidationError = false;
-		// 	var oBinding = oInput.getBinding("value");
 
-		// 	try {
-		// 		oBinding.getType().validateValue(oInput.getValue());
-		// 	} catch (oException) {
-		// 		sValueState = "Error";
-		// 		bValidationError = true;
-		// 	}
+		_validateInput: function (oInput) {
+			var sValueState = "None";
+			var bValidationError = false;
+			var oBinding = oInput.getBinding("value");
 
-		// 	oInput.setValueState(sValueState);
-
-		// 	return bValidationError;
-		// },
-		// onChange: function(oEvent){
-		// 	var oInput = oEvent.getSource();
-		// 	this._validateInput(oInput);
-		// 	// var oBinding = oInput.getBinding('value');
-			
-		// 	// var sValueState = "None";
-		// 	// var bValidationError = false;
-		// 	// try {
-		// 	// 	oBinding.getType().validateValue(oInput.getValue())
-		// 	// } catch (oException) {
-		// 	// 	sValueState = "Error";
-		// 	// 	bValidationError = true;			
-		// 	// }
-		// 	// oInput.setValueState(sValueState);
-
-		// 	// return bValidationError;
-		// },
-	
-
-		// onNameChange1: function(oEvent) {
-		// 	var oInput = oEvent.getSource();
-		// 	this._validateInput(oInput);
-		// },
-		productListFactory: function (sId, oContext) {
-			sap.ui.getCore().getModel('products')
-
-			var oUIControl;
-
-			// Decide based on the data which dependent to clone
-			if (oContext.getProperty("UnitsInStock") === 0 && oContext.getProperty("Discontinued")) {
-				// The item is discontinued, so use a StandardListItem
-				oUIControl = this.byId("productSimple").clone(sId);
-			} else {
-				// The item is available, so we will create an ObjectListItem
-				oUIControl = this.byId("productExtended").clone(sId);
-
-				// The item is temporarily out of stock, so we will add a status
-				if (oContext.getProperty("UnitsInStock") < 1) {
-					oUIControl.addAttribute(new ObjectAttribute({
-						text : {
-							path: "i18n>outOfStock"
-						}
-					}));
-				}
+			try {
+				oBinding.getType().validateValue(oInput.getValue());
+			} catch (oException) {
+				sValueState = "Error";
+				bValidationError = true;
 			}
 
-			return oUIControl;
-		}
+			oInput.setValueState(sValueState);
+
+			return bValidationError;
+		},
+		onChange: function(oEvent){
+			var oInput = oEvent.getSource();
+			this._validateInput(oInput);
+		},
     });
 });

@@ -1,149 +1,64 @@
-<mvc:View 
-controllerName="dataBinding.controller.App"
-xmlns="sap.m" xmlns:form="sap.ui.layout.form" 
-xmlns:l="sap.ui.layout"
-xmlns:core="sap.ui.core"
-xmlns:mvc="sap.ui.core.mvc">
+<mvc:View controllerName="dataBinding.controller.App" xmlns="sap.m"
+	 xmlns:mvc="sap.ui.core.mvc">
 
-<Panel headerText="Binding Fundamentals" class="sapUiResponsiveMargin" width="auto">
-    <form:SimpleForm editable="true" layout="ColumnLayout" >
-        <Label text="First Name"/>
-        <Input value="{employee>/firstName}" valueLiveUpdate="true" width="200px" enabled="{employee>/enabled}"/>
-        <Label text="Last Name"/>
-        <Input value="{employee>/lastName}" valueLiveUpdate="true" width="200px" enabled="{employee>/enabled}"/>
-        <Label text="Enabled"/>
-        <CheckBox selected="{employee>/enabled}"/>
-		<Label text="Full Name"/>
-		<Text text="{ parts:[
-								{path: 'employee>/firstName'},
-								{path: 'employee>/lastName'}
-							] }"/>
-        
-    </form:SimpleForm>
+	<Panel headerText="Binding Constraints And Custom Data Type" 
+		class="sapUiResponsiveMargin" width="auto">
+		<content>
 
-</Panel>
-<Panel headerText="Address" class="sapUiResponsiveMargin" width="auto">
-    <content >  
- 
-        <Label text="Home Address" showColon="true"/>    
-        <!-- <Input binding="{employee>/Address}" value="{path: 'employee>street'}"/>   This also works  -->
-        <Input binding="{employee>/Address}" value="{employee>street}"/>    
-        <FormattedText class="sapUiSmallMarginBottom" binding="{employee>/Address}"
-					htmlText="{employee>street}&lt;br>{employee>City} &lt;br>{employee>Country}"
-					id="address" 
-					width="200px"/>
-    </content>
-
-</Panel>
-<!-- <Panel headerText="Validation" class="sapUiResponsiveMargin" width="auto">
-    <content >  
- 
-        <Label text="POC Constraints" showColon="true"/>    
-        <!-- <Input binding="{employee>/Address}" value="{path: 'employee>street'}"/>   This also works  -->
-        <Input id='amt' class="sapUiSmallMarginBottom" placeholder="Enter Order Quantity"
-				valueStateText="Quantity should be between 1 and 10"
-                value="{
-                path:'Constraints>/OrderQuantity',
+			<Label text="Enter Order Qty1" showColon="true" />
+			<Input id='OrdQty1' class="sapUiSmallMarginBottom" placeholder="Enter Order Quantity"
+				valueStateText="Quantity should be between 1 and 10" value="{
+                path:'myModel>/OrderQuantity1',
                 type: 'sap.ui.model.type.Integer',                
                 constraints : {
 					minimum: 1,
 					maximum: 10
                     }
-				}"
-        			change=".onChange"/>
+				}"  />
 
-        	<Input
-				id="nameInput"
-				class="sapUiSmallMarginBottom"
-				placeholder="Enter name"
-				valueStateText="Name must not be empty. Maximum 10 characters."
-				value="{
-					path : 'Constraints>/OrderQuantity',
-					type : 'sap.ui.model.type.Integer',
-					constraints : {
-						minimum: 1,
-						maximum: 10
+
+			
+			<Label text="Enter Order Qty2" showColon="true" />
+			<Input id='OrdQty2' class="sapUiSmallMarginBottom" 
+			placeholder="Enter Order Quantity"						
+				  change=".onChange"/>
+
+			<Label text="Enter Weight" showColon="true" />
+			<Input id="weight" class="sapUiSmallMarginBottom" placeholder="Enter Weight"
+				 value="{
+					path : 'myModel>/weight',
+					type : 'sap.ui.model.odata.type.Decimal',
+					formatOptions:{
+							minFractionDigits:3,
+							maxFractionDigits:3
+						}, 
+					constraints:{
+							precision:13,
+							scale:3,
+							minimum:'2.000',
+							maximum: '10.000'
+						}			
+				}" />
+
+			<Label text="Enter Travel Date" showColon="true" />
+			<DatePicker id="nameInput2" class="sapUiSmallMarginLeft sapUiSmallMarginBottom" value='{
+					path: "myModel>/date",
+					type: "sap.ui.model.type.Date",
+					formatOptions:{
+						pattern: "MM-dd-yyyy",
+						strictParsing:"true"
 					}
-				}"
-				change= ".onNameChange1" />
-    </content>
-	<DatePicker
-			id="DP4"
-			dateValue="{path:'Constraints>/date', 
-					type:'sap.ui.model.type.Date', 
-					formatOptions: 
-					{ style: 'long', strictParsing: true}
-				}"
-			class="sapUiSmallMarginBottom" width='300px'/>
+				}'  />
 
-	<!-- <DatePicker id="datPicker" value="{ 
-									path: 'Constraints>/date' ,
-									type:'sap.ui.model.type.Date',
-									formatOptions:{
-										pattern:'yyyy/MM/dd',
-										strictParsing:'true'
-									}
-										}" width='200px'/> -->
+			<Label text="Enter ZIP Code" showColon="true" />
+			<Input id="zipcode" class="sapUiSmallMarginBottom" placeholder="Enter your zip code" 					
+					value="{
+						path: 'myModel>/zip',
+						type: 'sap.ui.sample.onlyDigit'
 
-</Panel> -->
-<Panel headerText="Product List"  class="sapUiResponsiveMargin" width="auto">
-    <List items="{products>/Products}">
-        <ObjectListItem title="{products>ProductName}"
-        press=".onPressItem"
-        type="Active"        
-        number="{
-            parts:[{path:'products>UnitPrice'},{path:'products>currencyCode'}],
-            type:'sap.ui.model.type.Currency',
-            formatOptions:{showMeasure:false}
-        }"        
-        numberUnit="{products>currencyCode}" 
-        numberState="{= ${products>UnitPrice} > ${employee>/thresholdValue} ? 'Error': 'Success' }"
-        >
-        <attributes>
-            <ObjectAttribute text="{products>QuantityPerUnit}"/>   
-        </attributes>
-        
-        </ObjectListItem>
-    </List>
-</Panel>
-<Panel id="productDetailsPanel" headerText="Product Details" class="sapUiResponsiveMargin" width="auto"
-binding="{products>/Products/1}">
-<form:SimpleForm editable="true" layout="ColumnLayout">
-			<Label text="{i18n>ProductID}"/>
-			<Input value="{products>ProductID}"/>
+				}" />
+		</content>
 
-			<Label text="{i18n>ProductName}"/>
-			<Input value="{products>ProductName}"/>
+	</Panel>
 
-			<Label text="{i18n>QuantityPerUnit}"/>
-			<Input value="{products>QuantityPerUnit}"/>
-
-			<Label text="{i18n>UnitPrice}"/>
-			<Input value="{products>UnitPrice}"/>
-
-			<Label text="{i18n>UnitsInStock}"/>
-			<Input value="{products>UnitsInStock}"/>
-
-			<Label text="{i18n>Discontinued}"/>
-			<CheckBox selected="{products>Discontinued}"/>
-		</form:SimpleForm>
-
-</Panel>
-
-<Panel headerText="List with Factory Function}" class="sapUiResponsiveMargin" width="auto">
-		<List
-			id="ProductList"
-			headerText="{i18n>productListTitle}"
-			items="{
-				path: 'products>/Products',
-				factory: '.productListFactory'
-			}">
-			<dependents>
-				<core:Fragment fragmentName="dataBinding.view.ProductSimple" type="XML"/>
-				<core:Fragment fragmentName="dataBinding.view.ProductExtended" type="XML"/>
-			</dependents>
-		</List>
-</Panel>
-
-    <Text text="Hello {/greeting}" />
 </mvc:View>
