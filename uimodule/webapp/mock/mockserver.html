@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Title of com.sap.crud.ui5demo</title>
+    <style>
+        html,
+        body,
+        body>div,
+        #container,
+        #container-uiarea {
+            height: 100%;
+        }
+    </style>
+    <script id="sap-ui-bootstrap" src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_fiori_3_dark" data-sap-ui-resourceroots='{
+            "com.sap.crud.ui5demo": "../"
+        }' data-sap-ui-oninit="module:com/sap/crud/ui5demo/server/initMockServer" data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true" data-sap-ui-frameOptions="trusted"></script>
+    <script src="../Service/FakeRest.min.js"></script>
+</head>
+
+<body class="sapUiBody sapUiSizeCompact" id="content">
+    <div data-sap-ui-component data-name="com.sap.crud.ui5demo" data-id="container"
+        data-settings='{"id" : "com.sap.crud.ui5demo"}' data-handle-validation="true"></div>
+</body>
+
+</html>
