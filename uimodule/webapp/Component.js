@@ -33,7 +33,7 @@ sap.ui.define([
           url: "/Products",
           dataType: "json",
           success: function (oData) {
-            oAppModel.setData(oData);
+            oAppModel.setData(oData.value);
           },
           error: function () {
             console.log("an error occurred retrieving the Data");
