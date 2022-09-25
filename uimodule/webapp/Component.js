@@ -27,18 +27,33 @@ sap.ui.define([
         // set the device model
         this.setModel(models.createDeviceModel(), "device");
         var oAppModel = new AppModel();
+
+        var oList = this.getModel("Northwind").bindList("/Products");
+        oList.requestContexts().then((oData) => {
+          debugger
+
+          var Products = [];
+          oData.forEach(element => {
+            Products.push(element.getObject())
+          });
+          oAppModel.setData(Products);
+        })
+
+
+
+
         // @ts-ignore
-        jQuery.get({
-          contentType: "application/json",
-          url: "/Products",
-          dataType: "json",
-          success: function (oData) {
-            oAppModel.setData(oData.value);
-          },
-          error: function () {
-            console.log("an error occurred retrieving the Data");
-          }
-        });
+        // jQuery.get({
+        //   contentType: "application/json",
+        //   url: "/proxy/main/Products",
+        //   dataType: "json",
+        //   success: function (oData) {
+        //     oAppModel.setData(oData.value);
+        //   },
+        //   error: function () {
+        //     console.log("an error occurred retrieving the Data");
+        //   }
+        // });
         this.setModel(oAppModel, "products");
       }
     });

@@ -21,3 +21,8 @@ server:
       configuration:
         port: 35729
         path: uimodule/webapp
+    - name: ui5-middleware-simpleproxy
+      afterMiddleware: compression
+      mountPath: /proxy
+      configuration:
+        baseUri: "http://localhost:4004"

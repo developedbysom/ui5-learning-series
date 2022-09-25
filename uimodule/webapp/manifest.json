@@ -8,7 +8,16 @@
       "version": "0.0.1"
     },
     "title": "{{appTitle}}",
-    "description": "{{appDescription}}"
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "MainService": {
+        "uri": "/proxy/main/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
   },
   "sap.ui": {
     "technology": "UI5",
@@ -43,6 +52,15 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
           "bundleName": "com.sap.crud.ui5demo.i18n.i18n"
+        }
+      },
+      "Northwind": {
+        "dataSource": "MainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "groupId": "$direct",
+          "synchronizationMode": "None"
         }
       }
     },
